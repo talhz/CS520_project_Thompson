@@ -6,7 +6,7 @@ def project_sphere(X):
     X = X / norms
     return X
 
-def projected_gradient_descent(f, X0, lr=1e-2, max_iters=1000, tol=1e-6):
+def projected_gradient_descent(f, X0, lr=1e-2, max_iters=1000, tol=1e-7):
     """
     Minimize f(X) subject to diag(X*X^T) = e using projected gradient descent.
 
@@ -57,7 +57,7 @@ def constraint(X):
     return torch.norm(torch.diagonal(X @ X.t()) - torch.ones(n), p=2)
 
 # Minimize f(X) subject to the constraint using projected gradient descent.
-X_opt, f_val, n_iters = projected_gradient_descent(lambda X: f(X) + 1e6 * constraint(X), X0)
+X_opt, f_val, n_iters = projected_gradient_descent(lambda X: f(X), X0)# + 1e6 #* constraint(X), X0)
 
 # Print the results.
 print("Optimal solution X:\n", X_opt)
