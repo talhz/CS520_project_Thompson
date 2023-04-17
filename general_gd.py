@@ -80,21 +80,8 @@ class GeneralGD:
         """
         For 3d case, plot X on unit sphere
         """
-        # if self.X.shape[1] != 3: 
-        #     raise ValueError("Only support 3D plot!")
-        # plt.rcParams["figure.figsize"] = [7.00, 3.50]
-        # plt.rcParams["figure.autolayout"] = True
-        # fig = plt.figure()
-        # ax = fig.add_subplot(projection='3d')
-        # r = 0.05
-        # u, v = np.mgrid[0:2 * np.pi:30j, 0:np.pi:20j]
-        # x = np.cos(u) * np.sin(v)
-        # y = np.sin(u) * np.sin(v)
-        # z = np.cos(v)
-        # ax.plot_surface(x, y, z, cmap=plt.cm.YlGnBu_r)
-        
-        # plt.show()
-
+        if self.X.shape[1] != 3: 
+            raise ValueError("Only support 3D plot!")
 
         fig = plt.figure()
         ax = fig.add_subplot(111, projection='3d')
