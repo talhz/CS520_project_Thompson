@@ -1,16 +1,18 @@
 import torch
-from general_gd import GeneralGD
+from Thompson.algo import general_gd
 
-## Example: Nonconvex Problem (Not stable)
 
-# Define the log-distance function to minimize.
+
+## Example: Thompson Problem    
+
+# Define the quadratic function to minimize.
 def f(X):
     n = X.shape[0]
     energy = 0
     for i in range(n):
         for j in range(i+1, n):
-            dist = -torch.log(torch.norm(X[i,:] - X[j,:]))
-            energy += dist
+            dist = torch.norm(X[i,:] - X[j,:])**2
+            energy += 1 / dist
     return energy*2
 
 # Generate some random data for X0.
