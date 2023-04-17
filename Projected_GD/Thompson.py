@@ -1,5 +1,7 @@
 import torch
-from Thompson.algo import general_gd
+from general_gd import GeneralGD
+
+torch.set_printoptions(precision=6)
 
 
 
