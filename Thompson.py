@@ -1,5 +1,4 @@
 import torch
-import matplotlib.pyplot as plt
 from general_gd import GeneralGD
 
 ## Example: Thompson Problem    
