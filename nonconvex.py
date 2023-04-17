@@ -10,7 +10,7 @@ def f(X):
     for i in range(n):
         for j in range(i+1, n):
             dist = -torch.log(torch.norm(X[i,:] - X[j,:]))
-            energy += 1 / dist
+            energy += dist
     return energy*2
 
 # Generate some random data for X0.
