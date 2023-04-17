@@ -23,7 +23,7 @@ class GeneralGD:
         self.f = f
         self.X0 = X0
         self.lr = lr
-        self.max_iters = 1000
+        self.max_iters = max_iters
         self.tol = 1e-7
         
     @staticmethod    
@@ -37,7 +37,7 @@ class GeneralGD:
         """
         Define the constraint: diag(X*X^T) = e.
         """
-        return torch.norm(torch.diagonal(self.X @ self.X.t()) - torch.ones(self.X.shape[0]), p=2)
+        return torch.norm(torch.diagonal(self.X.detach() @ self.X.detach().t()) - torch.ones(self.X.detach().shape[0]), p=2)
 
     def train(self):
         """
