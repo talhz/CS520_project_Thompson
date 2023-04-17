@@ -76,7 +76,7 @@ class GeneralGD:
         print("Number of iterations until convergence:", self.n_iters)
         print("Constraint violation at the optimal solution:", self.constraint(self.X.detach()))
         
-    def plotX(self):
+    def plotX(self, save=False):
         """
         For 3d case, plot X on unit sphere
         """
