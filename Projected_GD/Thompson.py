@@ -1,8 +1,6 @@
 import torch
 from general_gd import GeneralGD
 
-torch.set_printoptions(precision=6)
-
 
 
 ## Example: Thompson Problem    

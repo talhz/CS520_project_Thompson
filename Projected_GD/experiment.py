@@ -24,7 +24,6 @@ for n in range(2, 31):
     
     learner = GeneralGD(f, X0)
     X_opt, f_val, n_iters = learner.train()
-    learner.plotX()
     res.append(f_val)
 
 print(res)
