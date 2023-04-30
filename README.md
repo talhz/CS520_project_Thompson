@@ -1,5 +1,5 @@
 # CS520_project_Thompson
-This is the repository for CS520 project 1
+This is the repository for CS520 project 1. In this repo, there are several algorithms that can solve Thompson-type problem. Current algorithms include [projected gradient descent (PGD)](https://github.com/talhz/CS520_project_Thompson/blob/main/Projected_GD/general_gd.py), [nesterov accelerated PGD](https://github.com/talhz/CS520_project_Thompson/blob/main/Projected_GD/PGD_nesterov.py), [penalty method](https://github.com/talhz/CS520_project_Thompson/blob/main/Projected_GD/penalty.py), [augmented Lagrange method](https://github.com/talhz/CS520_project_Thompson/blob/main/Projected_GD/augmented_Lagrange.py) and [stochastic gradient descent (SGD) method](https://github.com/talhz/CS520_project_Thompson/blob/main/Projected_GD/SGD.py).
 
 ## Week1 Update
 Nelder-Mead Algorithm and Projected Gradient Descent are added.
