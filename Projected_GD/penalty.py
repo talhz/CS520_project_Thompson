@@ -43,7 +43,7 @@ class Penalty:
         self.X = self.X0.clone().double().requires_grad_(True)
         self.step = 0
         n = self.X.shape[0]
-        self.Mu = 10
+        self.Mu = 100
         self.f_val = self.objective(self.X, self.Mu)
         while self.step < self.steps:
             self.n_iters = 0
