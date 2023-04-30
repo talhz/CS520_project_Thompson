@@ -61,7 +61,10 @@ class SGD:
                 self.X.detach()[batch_start:batch_end, :] -= self.lr * (((n - 1) * grad_f / (self.batch_size - 1)) + self.Mu * (torch.norm(self.X.detach()[batch_start:batch_end, :], dim=1, keepdim=True)**2 - 1) * self.X.detach()[batch_start:batch_end, :])
             self.epoch += 1
             if self.epoch % 100 == 0:
-                print(self.f(self.X), self.objective(self.X, self.Mu))
+                print("-------------")
+                print("epoch:", self.epoch)
+                print("current function value:", self.f(self.X).detach())
+                print("current objective value:", self.objective(self.X, self.Mu).detach())
         return self.X.detach()
     
     def result(self):
