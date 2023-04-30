@@ -1,5 +1,5 @@
 import torch
-from general_gd import GeneralGD
+from PGD import PGD
 
 
 
@@ -19,7 +19,7 @@ def f(X):
 k, n = 3, 10
 X0 = torch.randn(n, k)
 
-learner = GeneralGD(f, X0)
+learner = PGD(f, X0)
 X_opt, f_val, n_iters = learner.train()
 learner.result()
 

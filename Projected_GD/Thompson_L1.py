@@ -1,5 +1,5 @@
 import torch
-from general_gd import GeneralGD
+from PGD import PGD
 
 ## Example: Thompson Problem    
 
@@ -17,10 +17,14 @@ def f(X):
 k, n = 3, 50
 X0 = torch.randn(n, k)
 
-learner = GeneralGD(f, X0)
-X_opt, f_val, n_iters = learner.train()
+learner = PGD(f, X0)
+T = 1000
+res = []
+for t in range(1, T + 1):
+    f_val = learner.train(t)
+    res.append(f_val)
 learner.result()
 
 # 3d plot
 learner.plotX()
-learner.plot_converge()
+# learner.plot_converge()

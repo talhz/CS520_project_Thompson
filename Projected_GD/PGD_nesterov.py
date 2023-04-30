@@ -28,6 +28,10 @@ class PGD_Nesterov:
         self.lr = lr
         self.max_iters = max_iters
         self.tol = 1e-7
+        self.X = self.X0.clone().requires_grad_(True)
+        self.Xback = self.X0.clone().requires_grad_(True)
+        self.y = self.X - (self.X - self.Xback) / 2
+        self.converge = False
         
     @staticmethod    
     def project_sphere(X):
@@ -80,7 +84,7 @@ class PGD_Nesterov:
         """
         return torch.norm(torch.diagonal(self.X.detach() @ self.X.detach().t()) - torch.ones(self.X.detach().shape[0]), p=2)
 
-    def train(self):
+    def train(self, t):
         """
         Minimize f(X) subject to diag(X*X^T) = e using projected gradient descent.
 
@@ -94,31 +98,28 @@ class PGD_Nesterov:
         Returns
         
         """
-        self.X = self.X0.clone().requires_grad_(True)
-        self.Xback = self.X0.clone().requires_grad_(True)
-        self.n_iters = 1
-        y = self.X + (self.n_iters - 2) * (self.X - self.Xback) / (self.n_iters + 1) 
-        self.f_val = self.f(y)
-        self.flist = [self.f(self.X).detach().numpy()]
-        while self.n_iters <= self.max_iters:
-            # Compute the gradient of f(X) w.r.t. X.
-            grad_f = torch.autograd.grad(self.f_val, y)[0]
-            # Check gradient
-            # torch.autograd.gradcheck(self.f, inputs=y, eps=1e-2, atol=1e-2)
-            
-            # Project each row of X onto a unit norm sphere.
-            self.Xback = self.X
-            self.X = self.project_sphere(y - self.lr * grad_f)
-            self.flist.append(self.f(self.X).detach().numpy())
-            # Update the function value and check for convergence.
-            y = self.X + (self.n_iters - 2) * (self.X - self.Xback) / (self.n_iters + 1) 
-            
-            f_old = self.f_val
-            self.f_val = self.f(y)
-            if torch.abs((self.f_val - f_old) / f_old) < self.tol:
-                break
-            self.n_iters += 1
-        return self.X.detach(), self.f_val.detach(), self.n_iters
+        
+        
+        self.f_val = self.f(self.y)
+        if t < self.max_iters:
+            if not self.converge:
+                # Compute the gradient of f(X) w.r.t. X.
+                grad_f = torch.autograd.grad(self.f_val, self.y)[0]
+                # Check gradient
+                # torch.autograd.gradcheck(self.f, inputs=y, eps=1e-2, atol=1e-2)
+                
+                # Project each row of X onto a unit norm sphere.
+                self.Xback = self.X
+                self.X = self.project_sphere(self.y - self.lr * grad_f)
+                self.y = self.X + (t - 2) * (self.X - self.Xback) / (t + 1) 
+                # Update the function value and check for convergence.
+                f_old = self.f_val
+                self.f_val = self.f(self.y)
+                if torch.abs((self.f_val - f_old) / f_old) < self.tol:
+                    self.converge = True
+                    self.n_iters = t
+            return self.f(self.X).detach()
+        return self.f(self.X).detach().numpy()
     
     def result(self):
         
@@ -154,10 +155,6 @@ class PGD_Nesterov:
 
         plt.show()
         
-    def plot_converge(self, save=False):
-        t = np.arange(len(self.flist))
-        plt.plot(t, self.flist)
-        plt.show()
 
 if __name__ == "__main__":
     def f(X):
@@ -175,12 +172,16 @@ if __name__ == "__main__":
     X0 = torch.randn(n, k)
 
     learner = PGD_Nesterov(f, X0)
-    X_opt, f_val, n_iters = learner.train()
+    T = 1000
+    res = []
+    for t in range(1, T + 1):
+        f_val = learner.train(t)
+        res.append(f_val)
     learner.result()
 
     # 3d plot
     learner.plotX()
-    learner.plot_converge()
+
     
 
 

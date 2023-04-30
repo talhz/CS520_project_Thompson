@@ -6,7 +6,7 @@ import sys
 
 torch.set_printoptions(precision=12)
 
-class GeneralGD:
+class PGD:
     def __init__(self, f, X0, lr=1e-2, max_iters=1000, tol=1e-7):
         """
         Initialization of projected gradient descent algorithm 
@@ -27,7 +27,9 @@ class GeneralGD:
         self.X0 = X0
         self.lr = lr
         self.max_iters = max_iters
-        self.tol = 1e-7
+        self.tol = tol
+        self.X = self.X0.clone().requires_grad_(True)
+        self.converge = False
         
     @staticmethod    
     def project_sphere(X):
@@ -74,13 +76,13 @@ class GeneralGD:
         #     raise ValueError("Cannot pass gradient check!")
             
     
-    def constraint(self, X):
+    def constraint(self):
         """
         Define the constraint: diag(X*X^T) = e.
         """
         return torch.norm(torch.diagonal(self.X.detach() @ self.X.detach().t()) - torch.ones(self.X.detach().shape[0]), p=2)
 
-    def train(self):
+    def train(self, t):
         """
         Minimize f(X) subject to diag(X*X^T) = e using projected gradient descent.
 
@@ -94,33 +96,31 @@ class GeneralGD:
         Returns
         
         """
-        self.X = self.X0.clone().requires_grad_(True)
-        self.n_iters = 0
         self.f_val = self.f(self.X)
-        self.flist = [self.f_val.detach().numpy()]
-        while self.n_iters < self.max_iters:
-            # Compute the gradient of f(X) w.r.t. X.
-            grad_f = torch.autograd.grad(self.f_val, self.X)[0]
-            # Check gradient
-            # torch.autograd.gradcheck(self.f, inputs=self.X, eps=1e-2, atol=1e-2)
-            
-            # Project each row of X onto a unit norm sphere.
-            self.X = self.project_sphere(self.X - self.lr * grad_f)
-            # Update the function value and check for convergence.
-            f_old = self.f_val
-            self.f_val = self.f(self.X)
-            self.flist.append(self.f_val.detach().numpy())
-            if torch.abs((self.f_val - f_old) / f_old) < self.tol:
-                break
-            self.n_iters += 1
-        return self.X.detach(), self.f_val.detach(), self.n_iters
+        if t < self.max_iters:
+            if not self.converge:
+                # Compute the gradient of f(X) w.r.t. X.
+                grad_f = torch.autograd.grad(self.f_val, self.X)[0]
+                # Check gradient
+                # torch.autograd.gradcheck(self.f, inputs=self.X, eps=1e-2, atol=1e-2)
+                
+                # Project each row of X onto a unit norm sphere.
+                self.X = self.project_sphere(self.X - self.lr * grad_f)
+                # Update the function value and check for convergence.
+                f_old = self.f_val
+                self.f_val = self.f(self.X)
+                if torch.abs((self.f_val - f_old) / f_old) < self.tol:
+                    self.converge = True
+                    self.n_iters = t
+            return self.f_val.detach()
+        return self.f_val.detach().numpy()
     
     def result(self):
         
         print("Optimal solution X:\n", self.X.detach())
         print("Value of f(X) at the optimal solution:", self.f_val.detach())
         print("Number of iterations until convergence:", self.n_iters)
-        print("Constraint violation at the optimal solution:", self.constraint(self.X.detach()))
+        print("Constraint violation at the optimal solution:", self.constraint())
         
     def plotX(self, save=False):
         """
@@ -147,11 +147,6 @@ class GeneralGD:
             x = self.X.detach().numpy()[i]
             ax.scatter(x[0], x[1], x[2], color='r', s=100)
 
-        plt.show()
-
-    def plot_converge(self, save=False):
-        t = np.arange(len(self.flist))
-        plt.plot(t, self.flist)
         plt.show()
         
             

@@ -41,7 +41,7 @@ class SGD:
         return torch.norm(torch.diagonal(self.X.detach() @ self.X.detach().t()) - torch.ones(self.X.detach().shape[0]), p=2)
     
     def train(self):
-        self.X = self.X0.clone()).double().requires_grad_(True)
+        self.X = self.X0.clone().double().requires_grad_(True)
         self.epoch = 0
         n = self.X.shape[0]
         self.Mu = 10000

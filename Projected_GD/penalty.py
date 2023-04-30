@@ -5,7 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 class Penalty:
-    def __init__(self, f, X0, lr=1e-3, steps=30, max_iters=500, tol=1e-7):
+    def __init__(self, f, X0, lr=1e-4, Mu=100, max_iters=10000, tol=10, safeguard=400):
         """
         Initialization of augmented Lagragian algorithm 
         
@@ -18,59 +18,59 @@ class Penalty:
         """
         self.f = f
         self.X0 = X0
+        self.X = self.X0.clone().double().requires_grad_(True)
+        self.Mu = Mu
         self.lr = lr
-        self.steps = steps
         self.max_iters = max_iters
         self.tol = tol
+        self.converge = False
+        self.time = 0
+        self.safeguard = safeguard
     
     def penalty(self, X):
         n = X.shape[0]
         sum = 0
         for i in range(n):
-            sum += torch.abs(torch.norm(X[i])**2 - 1)
+            sum += (torch.norm(X[i])**2 - 1)**2
         return sum
     
     def objective(self, X, Mu):
-        return self.f(X) + Mu * self.penalty(X)
+        return self.f(X) + 0.5 * Mu * self.penalty(X)
     
-    def constraint(self, X):
+    def constraint(self):
         """
         Define the constraint: diag(X*X^T) = e.
         """
         return torch.norm(torch.diagonal(self.X.detach() @ self.X.detach().t()) - torch.ones(self.X.detach().shape[0]), p=2)
     
-    def train(self):
-        self.X = self.X0.clone().double().requires_grad_(True)
-        self.step = 0
-        n = self.X.shape[0]
-        self.Mu = 100
-        self.f_val = self.objective(self.X, self.Mu)
-        while self.step < self.steps:
-            self.n_iters = 0
-            while self.n_iters < self.max_iters:
-            # Compute the gradient of f(X) w.r.t. X.
-                grad_f = torch.autograd.grad(self.f_val, self.X)[0]
-                # Check gradient TODO: only check gradient for certain iteration. 
-                # torch.autograd.gradcheck(self.objective, inputs=[self.X, self.Lambda, self.Mu], eps=1e-4, atol=1e-2)
-                self.X = self.X - self.lr * grad_f
-                # Update the function value and check for convergence.
-                f_old = self.f_val
-                self.f_val = self.objective(self.X, self.Mu)
-                if torch.norm(grad_f[0])**2 < self.tol:
-                    break
-                self.n_iters += 1
-            self.Mu += 5
-            self.step += 1
-            print(self.f(self.X))
-        return self.X.detach(), self.f_val.detach(), self.step
+    def train(self, t):
+        self.obj_val = self.objective(self.X, self.Mu)
+        if t < self.max_iters:
+            if self.converge or self.time >= self.safeguard:
+                self.converge = False
+                self.Mu *= 1.5
+                self.time = 0
+        # Compute the gradient of f(X) w.r.t. X.
+            self.time += 1
+            grad_f = torch.autograd.grad(self.obj_val, self.X)[0]
+            # Check gradient TODO: only check gradient for certain iteration. 
+            # torch.autograd.gradcheck(self.objective, inputs=[self.X, self.Lambda, self.Mu], eps=1e-4, atol=1e-2)
+            self.X = self.X - self.lr * grad_f
+            # Update the function value and check for convergence.
+            self.f_val = self.f(self.X)
+            if torch.norm(grad_f) < self.tol:
+                self.converge = True
+                self.tol /= 2
+                self.time = 0
+        return self.f_val.detach().numpy()
     
     def result(self):
         
         print("Optimal solution X:\n", self.X.detach())
         print("Value of f(X) at the optimal solution:", self.f(self.X))
-        print("Number of iterations until convergence:", self.step)
+        # print("Number of iterations until convergence:", self.step)
         print("Mu", self.Mu)
-        print("Constraint violation at the optimal solution:", self.constraint(self.X.detach()))
+        print("Constraint violation at the optimal solution:", self.constraint())
         
     def plotX(self, save=False):
         """
@@ -116,7 +116,12 @@ if __name__ == "__main__":
     k, n = 3, 30
     X0 = torch.randn(n, k)
     learner = Penalty(f, X0)
-    X_opt, f_val, n_iters = learner.train()
+    T = 2000
+    res = []
+    for t in range(1, T + 1):
+        f_val = learner.train(t)
+        print(f_val)
+        res.append(f_val)
     learner.result()
 
     # 3d plot
