@@ -14,17 +14,17 @@ def f(X):
     return energy
 
 # Generate some random data for X0.
-k, n = 3, 50
+k, n = 3, 30
 X0 = torch.randn(n, k)
-
 learner = PGD(f, X0)
-T = 1000
+T = 2000
 res = []
 for t in range(1, T + 1):
     f_val = learner.train(t)
+    print(f_val)
     res.append(f_val)
 learner.result()
 
 # 3d plot
-learner.plotX()
-# learner.plot_converge()
+if k == 3:
+    learner.plotX()
