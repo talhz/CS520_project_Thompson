@@ -5,7 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 class SGD:
-    def __init__(self, f, X0, lr=1e-7, steps=10000, batch_size=10, max_iters=500, tol=1e-7):
+    def __init__(self, f, X0, lr=1e-7, steps=10000, batch_size=25, max_iters=500, tol=1e-7):
         """
         Initialization of augmented Lagragian algorithm 
         
@@ -41,7 +41,7 @@ class SGD:
         return torch.norm(torch.diagonal(self.X.detach() @ self.X.detach().t()) - torch.ones(self.X.detach().shape[0]), p=2)
     
     def train(self):
-        self.X = self.X0.clone().double().requires_grad_(True)
+        self.X = self.X0.clone()).double().requires_grad_(True)
         self.epoch = 0
         n = self.X.shape[0]
         self.Mu = 10000
@@ -58,16 +58,10 @@ class SGD:
                 grad_f = torch.autograd.grad(f_val, X_batch)[0]
                 # Check gradient TODO: only check gradient for certain iteration. 
                 # torch.autograd.gradcheck(self.objective, inputs=[self.X, self.Lambda, self.Mu], eps=1e-4, atol=1e-2)
-                # print(torch.norm(self.X.detach()[batch_start:batch_end, :], dim=1).shape)
                 self.X.detach()[batch_start:batch_end, :] -= self.lr * (((n - 1) * grad_f / (self.batch_size - 1)) + self.Mu * (torch.norm(self.X.detach()[batch_start:batch_end, :], dim=1, keepdim=True)**2 - 1) * self.X.detach()[batch_start:batch_end, :])
-                # Update the function value and check for convergence.
-                # f_old = self.f_val
-                # self.f_val = self.objective(self.X, self.Mu)
-                # if torch.norm(grad_f[0])**2 < self.tol:
-                #     break
-            # self.Mu += 5
             self.epoch += 1
-            print(self.f(self.X))
+            if self.epoch % 100 == 0:
+                print(self.f(self.X), self.objective(self.X, self.Mu))
         return self.X.detach()
     
     def result(self):
@@ -119,7 +113,7 @@ if __name__ == "__main__":
         return energy
 
     # Generate some random data for X0.
-    k, n = 3, 30
+    k, n = 3, 100
     X0 = torch.randn(n, k)
     learner = SGD(f, X0)
     X_opt = learner.train()

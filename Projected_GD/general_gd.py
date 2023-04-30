@@ -97,17 +97,19 @@ class GeneralGD:
         self.X = self.X0.clone().requires_grad_(True)
         self.n_iters = 0
         self.f_val = self.f(self.X)
+        self.flist = [self.f_val.detach().numpy()]
         while self.n_iters < self.max_iters:
             # Compute the gradient of f(X) w.r.t. X.
             grad_f = torch.autograd.grad(self.f_val, self.X)[0]
             # Check gradient
-            torch.autograd.gradcheck(self.f, inputs=self.X, eps=1e-2, atol=1e-2)
+            # torch.autograd.gradcheck(self.f, inputs=self.X, eps=1e-2, atol=1e-2)
             
             # Project each row of X onto a unit norm sphere.
             self.X = self.project_sphere(self.X - self.lr * grad_f)
             # Update the function value and check for convergence.
             f_old = self.f_val
             self.f_val = self.f(self.X)
+            self.flist.append(self.f_val.detach().numpy())
             if torch.abs((self.f_val - f_old) / f_old) < self.tol:
                 break
             self.n_iters += 1
@@ -147,7 +149,11 @@ class GeneralGD:
 
         plt.show()
 
-
+    def plot_converge(self, save=False):
+        t = np.arange(len(self.flist))
+        plt.plot(t, self.flist)
+        plt.show()
+        
             
     
 

@@ -25,3 +25,4 @@ learner.result()
 
 # 3d plot
 learner.plotX()
+learner.plot_converge()

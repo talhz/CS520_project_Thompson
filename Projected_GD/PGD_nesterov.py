@@ -99,6 +99,7 @@ class PGD_Nesterov:
         self.n_iters = 1
         y = self.X + (self.n_iters - 2) * (self.X - self.Xback) / (self.n_iters + 1) 
         self.f_val = self.f(y)
+        self.flist = [self.f(self.X).detach().numpy()]
         while self.n_iters <= self.max_iters:
             # Compute the gradient of f(X) w.r.t. X.
             grad_f = torch.autograd.grad(self.f_val, y)[0]
@@ -108,6 +109,7 @@ class PGD_Nesterov:
             # Project each row of X onto a unit norm sphere.
             self.Xback = self.X
             self.X = self.project_sphere(y - self.lr * grad_f)
+            self.flist.append(self.f(self.X).detach().numpy())
             # Update the function value and check for convergence.
             y = self.X + (self.n_iters - 2) * (self.X - self.Xback) / (self.n_iters + 1) 
             
@@ -151,6 +153,11 @@ class PGD_Nesterov:
             ax.scatter(x[0], x[1], x[2], color='r', s=100)
 
         plt.show()
+        
+    def plot_converge(self, save=False):
+        t = np.arange(len(self.flist))
+        plt.plot(t, self.flist)
+        plt.show()
 
 if __name__ == "__main__":
     def f(X):
@@ -173,7 +180,7 @@ if __name__ == "__main__":
 
     # 3d plot
     learner.plotX()
-           
+    learner.plot_converge()
     
 
 

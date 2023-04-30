@@ -11,10 +11,10 @@ def f(X):
         for j in range(i+1, n):
             dist = torch.norm(X[i,:] - X[j,:])
             energy += 1 / dist
-    return energy*2
+    return energy
 
 # Generate some random data for X0.
-k, n = 3, 10
+k, n = 3, 50
 X0 = torch.randn(n, k)
 
 learner = GeneralGD(f, X0)
@@ -23,3 +23,4 @@ learner.result()
 
 # 3d plot
 learner.plotX()
+learner.plot_converge()
