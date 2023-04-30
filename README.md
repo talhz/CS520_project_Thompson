@@ -25,3 +25,4 @@ For each $n = 2, 3, \dots, 10$, the distribution of electrons are plotted:
 | $n = 8$ | <img src="https://github.com/talhz/CS520_project_Thompson/blob/main/figs/Thompson_8.png" alt="Thompson_8" width="500"/> |
 | $n = 9$ | <img src="https://github.com/talhz/CS520_project_Thompson/blob/main/figs/Thompson_9.png" alt="Thompson_9" width="500"/> |
 | $n = 10$ | <img src="https://github.com/talhz/CS520_project_Thompson/blob/main/figs/Thompson_10.png" alt="Thompson_10" width="500"/> |
+| $n = 100$ | <img src="https://github.com/talhz/CS520_project_Thompson/blob/main/figs/SGD_100.png?raw=true" alt="SGD_100" width="500"/> |
