@@ -16,13 +16,13 @@ We explored the projected gradient descent algorithm and found that it attained 
 For each $n = 2, 3, \dots, 10$, the distribution of electrons are plotted: 
 | $n$ <img width=100/>| Image <img width =500/> | 
 | --- |--- |
-| $n = 2$ | <img src="https://github.com/talhz/CS520_project_Thompson/blob/main/figs/Thompson_2.png" alt="Thompson_2" width="500"/> |
-| $n = 3$ | <img src="https://github.com/talhz/CS520_project_Thompson/blob/main/figs/Thompson_3.png" alt="Thompson_3" width="500"/> |
-| $n = 4$ | <img src="https://github.com/talhz/CS520_project_Thompson/blob/main/figs/Thompson_4.png" alt="Thompson_4" width="500"/> |
-| $n = 5$ | <img src="https://github.com/talhz/CS520_project_Thompson/blob/main/figs/Thompson_5.png" alt="Thompson_5" width="500"/> |
-| $n = 6$ | <img src="https://github.com/talhz/CS520_project_Thompson/blob/main/figs/Thompson_6.png" alt="Thompson_6" width="500"/> |
-| $n = 7$ | <img src="https://github.com/talhz/CS520_project_Thompson/blob/main/figs/Thompson_7.png" alt="Thompson_7" width="500"/> |
-| $n = 8$ | <img src="https://github.com/talhz/CS520_project_Thompson/blob/main/figs/Thompson_8.png" alt="Thompson_8" width="500"/> |
-| $n = 9$ | <img src="https://github.com/talhz/CS520_project_Thompson/blob/main/figs/Thompson_9.png" alt="Thompson_9" width="500"/> |
-| $n = 10$ | <img src="https://github.com/talhz/CS520_project_Thompson/blob/main/figs/Thompson_10.png" alt="Thompson_10" width="500"/> |
+| $n = 2$ | <img src="https://github.com/talhz/CS520_project_Thompson/blob/main/figs/Thompson_2.png?raw=true" alt="Thompson_2" width="500"/> |
+| $n = 3$ | <img src="https://github.com/talhz/CS520_project_Thompson/blob/main/figs/Thompson_3.png?raw=true" alt="Thompson_3" width="500"/> |
+| $n = 4$ | <img src="https://github.com/talhz/CS520_project_Thompson/blob/main/figs/Thompson_4.png?raw=true" alt="Thompson_4" width="500"/> |
+| $n = 5$ | <img src="https://github.com/talhz/CS520_project_Thompson/blob/main/figs/Thompson_5.png?raw=true" alt="Thompson_5" width="500"/> |
+| $n = 6$ | <img src="https://github.com/talhz/CS520_project_Thompson/blob/main/figs/Thompson_6.png?raw=true" alt="Thompson_6" width="500"/> |
+| $n = 7$ | <img src="https://github.com/talhz/CS520_project_Thompson/blob/main/figs/Thompson_7.png?raw=true" alt="Thompson_7" width="500"/> |
+| $n = 8$ | <img src="https://github.com/talhz/CS520_project_Thompson/blob/main/figs/Thompson_8.png?raw=true" alt="Thompson_8" width="500"/> |
+| $n = 9$ | <img src="https://github.com/talhz/CS520_project_Thompson/blob/main/figs/Thompson_9.png?raw=true" alt="Thompson_9" width="500"/> |
+| $n = 10$ | <img src="https://github.com/talhz/CS520_project_Thompson/blob/main/figs/Thompson_10.png?raw=true" alt="Thompson_10" width="500"/> |
 | $n = 100$ | <img src="https://github.com/talhz/CS520_project_Thompson/blob/main/figs/SGD_100.png?raw=true" alt="SGD_100" width="500"/> |
