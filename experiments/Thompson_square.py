@@ -1,6 +1,8 @@
 import torch
 from PGD import PGD
 
+
+
 ## Example: Thompson Problem    
 
 # Define the quadratic function to minimize.
@@ -9,12 +11,12 @@ def f(X):
     energy = 0
     for i in range(n):
         for j in range(i+1, n):
-            dist = torch.norm(X[i,:] - X[j,:])
+            dist = torch.norm(X[i,:] - X[j,:])**2
             energy += 1 / dist
-    return energy
+    return energy*2
 
 # Generate some random data for X0.
-k, n = 3, 40
+k, n = 3, 30
 X0 = torch.randn(n, k)
 learner = PGD(f, X0)
 T = 2000
