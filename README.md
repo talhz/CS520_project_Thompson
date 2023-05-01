@@ -12,6 +12,27 @@ We explored the projected gradient descent algorithm and found that it attained 
 <p align='center'>
   <img src="https://github.com/talhz/CS520_project_Thompson/blob/main/figs/gif.gif?raw=true" alt="thompsonL2" width="90%"/>  
 </p>
+## Quick Example
+
+```python3
+def f(X):
+    n = X.shape[0]
+    energy = 0
+    for i in range(n):
+        for j in range(i+1, n):
+            dist = torch.norm(X[i,:] - X[j,:])
+            energy += 1 / dist
+    return energy
+
+k, n = 3, 30
+X0 = torch.randn(n, k)
+learner_PGD = PGD(f, X0)
+T = 50
+for t in range(1, T + 1):
+  learner_PGD.train(t)
+learner_PGD.result()
+```
+In each iteration, the learner returns current value of the enegy function `f(X)` and the result will be printed in the end. 
 
 For each $n = 2, 3, \dots, 10$, the distribution of electrons are plotted. Check [result](https://github.com/talhz/CS520_project_Thompson/tree/main/figs/result) for more figures.
 | $n$ <img width=100/>| Image <img width =500/> | 
