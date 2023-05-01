@@ -13,7 +13,7 @@ We explored the projected gradient descent algorithm and found that it attained 
   <img src="https://github.com/talhz/CS520_project_Thompson/blob/main/figs/gif.gif?raw=true" alt="thompsonL2" width="90%"/>  
 </p>
 
-For each $n = 2, 3, \dots, 10$, the distribution of electrons are plotted: 
+For each $n = 2, 3, \dots, 10$, the distribution of electrons are plotted. Check [result](https://github.com/talhz/CS520_project_Thompson/tree/main/figs/result) for more figures.
 | $n$ <img width=100/>| Image <img width =500/> | 
 | --- |--- |
 | $n = 2$ | <img src="https://github.com/talhz/CS520_project_Thompson/blob/main/figs/Thompson_2.png?raw=true" alt="Thompson_2" width="500"/> |
