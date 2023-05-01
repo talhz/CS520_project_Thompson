@@ -4,6 +4,7 @@ import torch
 import numpy as np
 import matplotlib.pyplot as plt
 
+torch.set_printoptions(precision=9)
 class Augmented_Lagragian:
     def __init__(self, f, X0, lr=1e-3, max_iters=10000, tol=1e-7, safeguard=100):
         """
@@ -113,7 +114,7 @@ if __name__ == "__main__":
         return energy
 
     # Generate some random data for X0.
-    k, n = 3, 30
+    k, n = 3, 40
     X0 = torch.randn(n, k)
     learner = Augmented_Lagragian(f, X0)
     T = 2000

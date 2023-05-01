@@ -4,6 +4,8 @@ import torch
 import numpy as np
 import matplotlib.pyplot as plt
 
+torch.set_printoptions(precision=9)
+
 class Penalty:
     def __init__(self, f, X0, lr=1e-4, Mu=100, max_iters=10000, tol=10, safeguard=400):
         """
@@ -113,7 +115,7 @@ if __name__ == "__main__":
         return energy
 
     # Generate some random data for X0.
-    k, n = 3, 30
+    k, n = 3, 40
     X0 = torch.randn(n, k)
     learner = Penalty(f, X0)
     T = 2000

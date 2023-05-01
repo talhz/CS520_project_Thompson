@@ -30,24 +30,24 @@ learner_PGD_nes = PGD_Nesterov(f, X0)
 learner_penal = Penalty(f, X0)
 learner_lag = Augmented_Lagragian(f, X0)
 ax = []
-T = 1000
-plt.figure(figsize=(10, 6))
+T = 50
+plt.figure(figsize=(5, 4))
 
 for t in range(1, T):
     res_PGD.append(learner_PGD.train(t))
     res_PGD_nes.append(learner_PGD_nes.train(t))
-    res_penal.append(learner_penal.train(t))
-    res_lag.append(learner_lag.train(t))
+    # res_penal.append(learner_penal.train(t))
+    # res_lag.append(learner_lag.train(t))
     ax.append(t)
     plt.clf()
-    colors = ['red', 'blue', 'purple', 'green']
+    colors = ['red', 'blue']
     plt.plot(ax, res_PGD, color=colors[0], linestyle='--')
     plt.plot(ax, res_PGD_nes, color=colors[1], linestyle='--')
-    plt.plot(ax, res_penal, color=colors[2], linestyle='--')
-    plt.plot(ax, res_lag, color=colors[3], linestyle='--')
+    # plt.plot(ax, res_penal, color=colors[2], linestyle='--')
+    # plt.plot(ax, res_lag, color=colors[3], linestyle='--')
     plt.xlabel('Iteration')
     plt.ylabel('Function Value')
-    plt.legend(['PGD', 'PGD Nesterov', 'Penalty', 'Augmented Lagrangian'])
+    plt.legend(['PGD', 'PGD Nesterov'])
     plt.pause(0.05)
     plt.ioff()
     

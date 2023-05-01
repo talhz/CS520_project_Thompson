@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import sys
 
-torch.set_printoptions(precision=12)
+torch.set_printoptions(precision=9)
 
 class PGD_Nesterov:
     def __init__(self, f, X0, lr=1e-2, max_iters=1000, tol=1e-7):
@@ -167,7 +167,7 @@ if __name__ == "__main__":
         return energy
 
     # Generate some random data for X0.
-    k, n = 3, 50
+    k, n = 3, 40
     
     X0 = torch.randn(n, k)
 

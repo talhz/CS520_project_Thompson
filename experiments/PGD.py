@@ -38,44 +38,6 @@ class PGD:
         X = X / norms
         return X
     
-    # def check_grad(self, grad, tol=1e-2):
-    #     """
-    #     Function to check gradient
-        
-    #     Args:
-    #         eps (float): the gap in finite difference
-    #         tol (float): Tolerance for finite difference and gradient
-            
-    #     Returns:
-    #         res (Boolean): indicates if passes the check
-    #     """
-    #     n, k = self.X0.shape
-    #     X = self.X.clone().detach()
-    #     Xcopy = X.clone()
-    #     finite_grad = torch.zeros((n, k))
-    #     eps = np.sqrt(sys.float_info.epsilon * self.f_val.detach())
-    #     print(self.f_val.detach(), eps)
-    #     print("Conducting gradient check... tolerance", tol)
-    #     for i in range(n):
-    #         for j in range(k):
-    #             X[i][j] += eps
-    #             # print(X, self.X.detach())
-    #             f_val = self.f(X)
-    #             print(f_val, self.f_val.detach())
-    #             diff = f_val - self.f_val.detach()
-    #             finite_grad[i][j] = diff / eps
-    #             # print(diff, diff / eps)
-    #             X = Xcopy.clone()
-                
-        # if torch.norm(finite_grad - grad.detach()) < tol:
-        #     print("Gradient Check Passed\n")
-        # else:
-        #     # print(finite_grad)
-        #     # print(grad)
-        #     print(torch.norm(finite_grad - grad.detach()))
-        #     raise ValueError("Cannot pass gradient check!")
-            
-    
     def constraint(self):
         """
         Define the constraint: diag(X*X^T) = e.
@@ -111,7 +73,7 @@ class PGD:
                 self.f_val = self.f(self.X)
                 if torch.abs((self.f_val - f_old) / f_old) < self.tol:
                     self.converge = True
-                    self.n_iters = t
+                self.n_iters = t
             return self.f_val.detach()
         return self.f_val.detach().numpy()
     

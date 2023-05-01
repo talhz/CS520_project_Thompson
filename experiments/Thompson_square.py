@@ -14,7 +14,7 @@ def f(X):
     return energy
 
 # Generate some random data for X0.
-k, n = 3, 30
+k, n = 3, 40
 X0 = torch.randn(n, k)
 learner = PGD(f, X0)
 T = 2000

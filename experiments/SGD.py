@@ -4,8 +4,9 @@ import torch
 import numpy as np
 import matplotlib.pyplot as plt
 
+torch.set_printoptions(precision=9)
 class SGD:
-    def __init__(self, f, X0, lr=1e-7, steps=10000, batch_size=25, max_iters=500, tol=1e-7):
+    def __init__(self, f, X0, lr=1e-7, steps=5000, batch_size=20, max_iters=500, tol=1e-7):
         """
         Initialization of augmented Lagragian algorithm 
         
@@ -70,7 +71,7 @@ class SGD:
     def result(self):
         
         print("Optimal solution X:\n", self.X.detach())
-        print("Value of f(X) at the optimal solution:", self.f(self.X))
+        print("Value of f(X) at the optimal solution:", self.f(self.X) / 2)
         # print("Number of iterations until convergence:", self.step)
         print("Mu", self.Mu)
         print("Constraint violation at the optimal solution:", self.constraint(self.X.detach()))
@@ -113,10 +114,10 @@ if __name__ == "__main__":
             for j in range(i+1, n):
                 dist = torch.norm(X[i,:] - X[j,:])
                 energy += 1 / dist
-        return energy
+        return energy * 2
 
     # Generate some random data for X0.
-    k, n = 3, 100
+    k, n = 3, 200
     X0 = torch.randn(n, k)
     learner = SGD(f, X0)
     X_opt = learner.train()
